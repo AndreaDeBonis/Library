@@ -32,29 +32,54 @@ function createCard (book) {
   const div = document.createElement("div")
   div.setAttribute('data', `${book.id}`)
   const divTitle = document.createElement("div")
+  divTitle.className='flex-1'
   const divAuthor = document.createElement("div")
+  divAuthor.className='flex-1'
   const divPages = document.createElement("div")
-  const button = document.createElement("button")
+  divPages.className='flex-1'
+  const divButtons = document.createElement("div")
+  divButtons.className='flex-1 flex justify-end'
+  const buttonDelete = document.createElement("button")
+  buttonDelete.innerHTML='<i class="material-icons">delete_forever</i>'
+  const buttonRead = document.createElement("button")
+  buttonRead.innerHTML='<i class="material-icons">book</i>'
   const title = document.createTextNode(`${book.title}`)
   const author = document.createTextNode(`${book.author}`)
   const pages = document.createTextNode(`${book.pages}`)
-  const buttonText = document.createTextNode('remove')
-  div.className='w-64 h-72 bg-gray-600 flex flex-col text-2xl px-4 py-4'
+  /* const buttonDeleteText = document.createTextNode('remove')
+  const buttonReadText = document.createTextNode('Read') */
+  div.className='rounded-lg border-2 border-transparent hover:border-white w-64 h-72 bg-gray-600 flex flex-col text-2xl p-8'
   divTitle.appendChild(title)
   divAuthor.appendChild(author)
   divPages.appendChild(pages)
-  button.appendChild(buttonText)
-  button.addEventListener("click", function (e) {
+  /* buttonDelete.appendChild(buttonDeleteText)
+  buttonRead.appendChild(buttonReadText) */
+
+  buttonDelete.className='bg-gray-600 h-8 mx4 rounded-lg hover:bg-red-600 '
+  buttonRead.className='bg-gray-600 h-8 mx-4 rounded-lg hover:bg-blue-600 '
+
+  buttonRead.addEventListener("click", function (e) {
     e.preventDefault()
-    const id = e.target.parentElement.getAttribute('data')
+    const id = e.target.parentElement.parentElement.parentElement.getAttribute('data')
+    console.log(id)
+    const index = myLibrary.map(book => book.id).indexOf(id)
+
+    myLibrary[index].read = !myLibrary[index].read
+  })
+
+  buttonDelete.addEventListener("click", function (e) {
+    e.preventDefault()
+    const id = e.target.parentElement.parentElement.parentElement.getAttribute('data')
     const index = myLibrary.map(book => book.id).indexOf(id)
     myLibrary.splice(index, 1)
-    e.target.parentElement.remove()
+    e.target.parentElement.parentElement.parentElement.remove()
   })
   div.appendChild(divTitle)
   div.appendChild(divAuthor)
   div.appendChild(divPages)
-  div.appendChild(button)
+  divButtons.appendChild(buttonDelete)
+  divButtons.appendChild(buttonRead)
+  div.appendChild(divButtons)
   document.getElementById("book-container").appendChild(div)
 }
 
